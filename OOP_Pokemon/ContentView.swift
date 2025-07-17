@@ -12,8 +12,9 @@ struct ContentView: View {
         VStack {
             Button(action: {
                 let game = Game()
-                let pokemon = Pokemon(name: "ピカチュウ", hp: 20, atk: 10)
-                game.battle(pokemon: pokemon)
+                let pikachu = Pikachu()
+                let hitokage = Hitokage()
+                game.battle(pokemon1: pikachu, pokemon2: hitokage)
             }) {
                 Text("ポケモンバトルを開始")
                     .font(.title)
