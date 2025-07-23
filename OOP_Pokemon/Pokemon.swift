@@ -12,7 +12,8 @@ class Pokemon {
     // なるべく意味のある命名にしたので、各自より良い名前をつけてください
     private var currentHp: Int // Swiftではプロパティ名にアンダースコアを使わないのが一般的でキャメルケースが推奨される
     private var maxHp: Int
-    private var currentAtk: Int
+    fileprivate var currentAtk: Int // Swiftではprivateは継承していてもアクセスできないため、fileprivateを使用
+    // atkというgetter/setterを使うのもありだと思う
 
     init(name: String, hp: Int, atk: Int) {
         self.characterName = name
@@ -42,14 +43,25 @@ class Pokemon {
         }
     }
 
-    func attack() {
+    // 違う方法として、プロパティを使わずにメソッドで取得することも可能
+    var atk: Int {
+        get {
+            currentAtk
+        }
+    }
+
+    func attack(target: Pokemon) {
+        target.hp -= currentAtk
         print("\(name)の攻撃！", terminator: "")
-        attackMessage()
+        attackMessage(target: target)
     }
 
-    func attackMessage() {
+    func attackMessage(target: Pokemon) {
     }
 
+    func isFainted() -> Bool {
+        return currentHp <= 0
+    }
 }
 
 class Pikachu: Pokemon {
@@ -57,8 +69,10 @@ class Pikachu: Pokemon {
         super.init(name: "ピカチュウ", hp: 20, atk: 10)
     }
 
-    override func attackMessage() {
-        print("10万ボルト！")
+    override func attackMessage(target: Pokemon) {
+        print(
+            "10万ボルト！\(target.name)は\(atk)ダメージをもらった！\(target.name)のHPは\(target.hp)だ！"
+        )
     }
 
 }
@@ -68,8 +82,8 @@ class Hitokage: Pokemon {
         super.init(name: "ヒトカゲ", hp: 18, atk: 5)
     }
 
-    override func attackMessage() {
-        print("ひのこ！")
+    override func attackMessage(target: Pokemon) {
+        print("ひのこ！\( target.name)は\(currentAtk)ダメージをもらった！\(target.name)のHPは\(target.hp)だ！")
     }
 
 }
