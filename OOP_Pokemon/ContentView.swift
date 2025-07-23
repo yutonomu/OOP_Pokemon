@@ -11,10 +11,10 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Button(action: {
-                let game = Game()
                 let pikachu = Pikachu()
                 let hitokage = Hitokage()
-                game.battle(pokemon1: pikachu, pokemon2: hitokage)
+                let game = Game(pokemon1: pikachu, pokemon2: hitokage)
+                game.battle()
             }) {
                 Text("ポケモンバトルを開始")
                     .font(.title)
