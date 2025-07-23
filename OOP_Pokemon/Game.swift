@@ -29,15 +29,27 @@ class Game {
 
     private func attack() -> (Pokemon, Pokemon) {
         while true {
-            pokemon1.attack(target: pokemon2)
-            if self.pokemon2.isFainted() {
-                return (pokemon1, pokemon2)
+            let (farstAttacker, secondAttacker) = self.compareSpeed(pokemon1: pokemon1, pokemon2: pokemon2)
+            farstAttacker.attack(target: secondAttacker)
+            if secondAttacker.isFainted() {
+                return (farstAttacker, secondAttacker)
             }
 
-            pokemon2.attack(target: pokemon1)
-            if self.pokemon1.isFainted() {
-                return (pokemon2, pokemon1)
+            secondAttacker.attack(target: farstAttacker)
+            if farstAttacker.isFainted() {
+                return (secondAttacker, farstAttacker)
             }
+        }
+    }
+
+    private func compareSpeed(pokemon1: Pokemon, pokemon2: Pokemon) -> (faster: Pokemon, slower: Pokemon) {
+        if pokemon1.speed > pokemon2.speed {
+            return (pokemon1, pokemon2)
+        } else if pokemon1.speed < pokemon2.speed {
+            return (pokemon2, pokemon1)
+        } else {
+            // 同速の場合はランダムで決定
+            return Bool.random() ? (pokemon1, pokemon2) : (pokemon2, pokemon1)
         }
     }
 

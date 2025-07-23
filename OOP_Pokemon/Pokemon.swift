@@ -14,12 +14,14 @@ class Pokemon {
     private var maxHp: Int
     fileprivate var currentAtk: Int // Swiftではprivateは継承していてもアクセスできないため、fileprivateを使用
     // atkというgetter/setterを使うのもありだと思う
+    private var currentSpeed: Int
 
-    init(name: String, hp: Int, atk: Int) {
+    init(name: String, hp: Int, atk: Int, speed: Int) {
         self.characterName = name
         self.currentHp = hp
         self.maxHp = hp * 2
         self.currentAtk = atk
+        self.currentSpeed = speed
     }
 
     var name: String {
@@ -50,6 +52,14 @@ class Pokemon {
         }
     }
 
+    // returnを使わずにプロパティで取得することも可能
+    // ただし、プロジェクト内では揃えた方が良いので、どちらかに統一することをおすすめします
+    var speed: Int {
+        get {
+            currentSpeed
+        }
+    }
+
     func attack(target: Pokemon) {
         target.hp -= currentAtk
         print("\(name)の攻撃！", terminator: "")
@@ -66,7 +76,7 @@ class Pokemon {
 
 class Pikachu: Pokemon {
     init() {
-        super.init(name: "ピカチュウ", hp: 20, atk: 10)
+        super.init(name: "ピカチュウ", hp: 20, atk: 10, speed: 20)
     }
 
     override func attackMessage(target: Pokemon) {
@@ -79,7 +89,7 @@ class Pikachu: Pokemon {
 
 class Hitokage: Pokemon {
     init() {
-        super.init(name: "ヒトカゲ", hp: 18, atk: 5)
+        super.init(name: "ヒトカゲ", hp: 18, atk: 5, speed: 20)
     }
 
     override func attackMessage(target: Pokemon) {
