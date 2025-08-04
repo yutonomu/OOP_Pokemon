@@ -7,11 +7,22 @@
 
 import Foundation
 
-class Game {
-    private var pokemon1: Pokemon
-    private var pokemon2: Pokemon
+protocol PokemonInterface {
+    var name: String { get }
+    var hp: Int { get set }
+    var atk: Int { get }
+    var speed: Int { get }
 
-    init(pokemon1: Pokemon, pokemon2: Pokemon) {
+    func attack(target: PokemonInterface)
+    func attackMessage(target: PokemonInterface)
+    func isFainted() -> Bool
+}
+
+class Game {
+    private var pokemon1: PokemonInterface
+    private var pokemon2: PokemonInterface
+
+    init(pokemon1: PokemonInterface, pokemon2: PokemonInterface) {
         self.pokemon1 = pokemon1
         self.pokemon2 = pokemon2
     }
@@ -27,14 +38,19 @@ class Game {
         print("\(pokemon2.name)が現れた！ \(pokemon2.name)のHPは\(pokemon2.hp)だ！")
     }
 
-    private func attack() -> (Pokemon, Pokemon) {
+    private func attack() -> (PokemonInterface, PokemonInterface) {
         while true {
-            let (farstAttacker, secondAttacker) = self.compareSpeed(pokemon1: pokemon1, pokemon2: pokemon2)
+            var (farstAttacker, secondAttacker) = self.compareSpeed(
+                pokemon1: pokemon1,
+                pokemon2: pokemon2
+            )
+            secondAttacker.hp -= farstAttacker.atk
             farstAttacker.attack(target: secondAttacker)
             if secondAttacker.isFainted() {
                 return (farstAttacker, secondAttacker)
             }
 
+            farstAttacker.hp -= secondAttacker.atk
             secondAttacker.attack(target: farstAttacker)
             if farstAttacker.isFainted() {
                 return (secondAttacker, farstAttacker)
@@ -42,7 +58,7 @@ class Game {
         }
     }
 
-    private func compareSpeed(pokemon1: Pokemon, pokemon2: Pokemon) -> (faster: Pokemon, slower: Pokemon) {
+    private func compareSpeed(pokemon1: PokemonInterface, pokemon2: PokemonInterface) -> (faster: PokemonInterface, slower: PokemonInterface) {
         if pokemon1.speed > pokemon2.speed {
             return (pokemon1, pokemon2)
         } else if pokemon1.speed < pokemon2.speed {
@@ -53,7 +69,7 @@ class Game {
         }
     }
 
-    private func showResult(winner: Pokemon, loser: Pokemon) {
+    private func showResult(winner: PokemonInterface, loser: PokemonInterface) {
         print("\(loser.name)は倒れた。\(winner.name)の勝ち！")
     }
 }

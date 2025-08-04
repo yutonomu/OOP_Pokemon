@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Pokemon {
+class Pokemon: PokemonInterface {
     private var characterName: String // _で始まる命名はSwiftの慣習ではないので避ける
     // なるべく意味のある命名にしたので、各自より良い名前をつけてください
     private var currentHp: Int // Swiftではプロパティ名にアンダースコアを使わないのが一般的でキャメルケースが推奨される
@@ -60,13 +60,12 @@ class Pokemon {
         }
     }
 
-    func attack(target: Pokemon) {
-        target.hp -= currentAtk
+    func attack(target: PokemonInterface) {
         print("\(name)の攻撃！", terminator: "")
         attackMessage(target: target)
     }
 
-    func attackMessage(target: Pokemon) {
+    func attackMessage(target: PokemonInterface) {
     }
 
     func isFainted() -> Bool {
@@ -79,7 +78,7 @@ class Pikachu: Pokemon {
         super.init(name: "ピカチュウ", hp: 20, atk: 10, speed: 20)
     }
 
-    override func attackMessage(target: Pokemon) {
+    override func attackMessage(target: PokemonInterface) {
         print(
             "10万ボルト！\(target.name)は\(atk)ダメージをもらった！\(target.name)のHPは\(target.hp)だ！"
         )
@@ -92,7 +91,7 @@ class Hitokage: Pokemon {
         super.init(name: "ヒトカゲ", hp: 18, atk: 5, speed: 20)
     }
 
-    override func attackMessage(target: Pokemon) {
+    override func attackMessage(target: PokemonInterface) {
         print("ひのこ！\( target.name)は\(currentAtk)ダメージをもらった！\(target.name)のHPは\(target.hp)だ！")
     }
 
